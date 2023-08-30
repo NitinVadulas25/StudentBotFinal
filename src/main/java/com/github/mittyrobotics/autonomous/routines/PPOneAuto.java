@@ -3,8 +3,6 @@ package com.github.mittyrobotics.autonomous.routines;
 import com.github.mittyrobotics.autonomous.Odometry;
 import com.github.mittyrobotics.autonomous.arm.AutoArmScoreCommand;
 import com.github.mittyrobotics.autonomous.arm.AutoScoreCommandGroup;
-import com.github.mittyrobotics.autonomous.pathfollowing.AutoLineDrive;
-import com.github.mittyrobotics.autonomous.pathfollowing.OldSwervePath;
 import com.github.mittyrobotics.autonomous.pathfollowing.math.Angle;
 import com.github.mittyrobotics.autonomous.pathfollowing.math.Point;
 import com.github.mittyrobotics.autonomous.pathfollowing.math.Pose;
