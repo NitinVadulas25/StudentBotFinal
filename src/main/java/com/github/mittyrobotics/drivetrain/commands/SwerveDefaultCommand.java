@@ -26,6 +26,24 @@ public class SwerveDefaultCommand extends CommandBase {
 
     @Override
     public void execute() {
+        throttleX = -OI.getInstance().getDriverController().getLeftX();
+        throttleY = -OI.getInstance().getDriverController().getLeftY();
+        throttleAngular = -OI.getInstance().getDriverController().getRightX();
+
+        SwerveSubsystem.getInstance().calculateInputs(
+                new Vector(
+                        SwerveConstants.MAX_LINEAR_SPEED_INCHES_PER_SECOND*Math.abs(throttleX)*throttleX,
+                        SwerveConstants.MAX_LINEAR_SPEED_INCHES_PER_SECOND*Math.abs(throttleX)*throttleY)
+                        SwerveConstants.MAX_ANGULAR_SPEED*throttleAngular
+        );
+
+        SwerveSubsystem.getInstance().applyCalculatedInputs();
+
+        SmartDashboard.putNumber("Desired Angle",desiredAngle[1]);
+
+
+
+
 
     }
 
