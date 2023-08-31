@@ -46,13 +46,24 @@ public class SwerveSubsystem extends SubsystemBase {
         for (int i = 0; i < 4; i++){
             double currentangle = Angle.standardize(getStandardizedModuleAngle(i));
             values[i] = Angle.standardize(values[i]);
-            boolean optimization = (values[i] - currentangle < PI && values[i] - currentangle > 0 || values[i] - currentangle < -PI);
-            double distance = Angle.getRealAngleDistance(currentangle, values[i], optimization);
+            boolean clock = (values[i] - currentangle < PI && values[i] - currentangle > 0 || values[i] - currentangle < -PI);
+            double distance = Angle.getRealAngleDistance(currentangle, values[i], clock);
             boolean flip = distance > PI /2;
+            flipped[i] = flip;
+
+            values[i] = getEncoderPosition(i) + (clock ? 1 : -1) * distance;
+
+            if (flip) {
+                values[i] += (clock ? -1 : 1) * PI;
+            }
+
+            anglemotors[i].set(ControlMode.Position, values[i] * TICKS_PER_RADIAN_FALCON_WITH_GEAR_RATIO); //change constants
         }
     }
-    public void setDmotors(){
-
+    public void setDmotors(double[] values){
+        for (int i = 0; i < 4; i++){
+            drivemotors[i].set(ControlMode.Velocity, (flipped[i] ? -1 : 1) * values[i] * TICKS_PER_RADIAN_FALCON_WITH_GEAR_RATIO);
+        }
     }
 
 
