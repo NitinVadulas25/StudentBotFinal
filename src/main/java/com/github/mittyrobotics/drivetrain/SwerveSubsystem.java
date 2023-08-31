@@ -29,6 +29,8 @@ public class SwerveSubsystem extends SubsystemBase {
         return instance;
     }
     public final InverseKinematics inverseKinematics = new InverseKinematics();
+    double robotLengthMeters;
+    double robotWidthMeters;
     private WPI_TalonFX[] drivemotors = new WPI_TalonFX[4];
     private WPI_TalonFX[] anglemotors = new WPI_TalonFX[4];
 
@@ -79,6 +81,37 @@ public class SwerveSubsystem extends SubsystemBase {
         public void calculateInputs(Vector linearVel, double angularVel){
 
         }
+    }
+
+    public double[] wheelSpeedAngle(double omega, double vx, double vy, int wheelNum) {
+        double wheel1Speed;
+        double angle1;
+        Vector angularVelocity;
+        if (wheelNum == 1) {
+            angularVelocity = new Vector(-omega*cos(PI/2-atan(robotLengthMeters/robotWidthMeters)),
+                    omega*sin(PI/2-atan(robotLengthMeters/robotWidthMeters)));
+        }
+        else if (wheelNum == 2) {
+            angularVelocity = new Vector(-omega*cos(PI/2-atan(robotLengthMeters/robotWidthMeters)),
+                    -omega*sin(PI/2-atan(robotLengthMeters/robotWidthMeters)));
+        }
+        else if (wheelNum == 3) {
+            angularVelocity = new Vector(omega*cos(PI/2-atan(robotLengthMeters/robotWidthMeters)),
+                    -omega*sin(PI/2-atan(robotLengthMeters/robotWidthMeters)));
+        }
+        else {
+            angularVelocity = new Vector(omega*cos(PI/2-atan(robotLengthMeters/robotWidthMeters)),
+                    omega*sin(PI/2-atan(robotLengthMeters/robotWidthMeters)));
+        }
+        Vector v = new Vector(vx, vy);
+        Vector v1 = Vector.add(angularVelocity, v);
+        wheel1Speed = v1.getMagnitude();
+        angle1 = atan2(v1.getY(), v1.getX());
+        return new double[]{wheel1Speed, angle1};
+    }
+
+    public void rotateWheel(double angle) {
+
     }
 
 }
