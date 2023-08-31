@@ -26,6 +26,17 @@ public class SwerveDefaultCommand extends CommandBase {
 
     @Override
     public void execute() {
+        throttleX = -OI.getInstance().getDriverController().getLeftX();
+        throttleY = -OI.getInstance().getDriverController().getLeftY();
+        throttleAngular = -OI.getInstance().getDriverController().getRightX();
+
+        SwerveSubsystem.getInstance().calculateInputs(
+            new Vector(
+
+            );
+
+
+        );
 
     }
 
