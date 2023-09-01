@@ -117,7 +117,7 @@ public class SwerveSubsystem extends SubsystemBase {
         }
     }
 
-    public double[] wheelAngle(double omega, double vx, double vy, int wheelNum) {
+    public double[] wheelAngle(double omega, double vx, double vy) {
         Vector angularVelocity1, angularVelocity2, angularVelocity3, angularVelocity4;
         Vector v = new Vector(vx, vy);
         double desiredAngle1 = 0;
@@ -154,7 +154,7 @@ public class SwerveSubsystem extends SubsystemBase {
         return new double[]{desiredAngle1, desiredAngle2, desiredAngle3, desiredAngle4};
     }
 
-    public double[] wheelSpeed(double omega, double vx, double vy, int wheelNum) {
+    public double[] wheelSpeed(double omega, double vx, double vy) {
         Vector angularVelocity1, angularVelocity2, angularVelocity3, angularVelocity4;
         Vector v = new Vector(vx, vy);
         double desiredAngle1 = 0;
