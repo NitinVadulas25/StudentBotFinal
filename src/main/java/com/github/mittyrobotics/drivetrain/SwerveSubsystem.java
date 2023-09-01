@@ -87,7 +87,7 @@ public class SwerveSubsystem extends SubsystemBase {
         private double[] angles;
         private double[] magnitudes;
 
-        private final double length = 25.68, width = 22.68;
+        private final double length = 25, width = 25;
 
         private Vector r;
 
