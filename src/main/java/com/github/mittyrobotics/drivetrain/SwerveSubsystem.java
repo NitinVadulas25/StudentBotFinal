@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import static java.lang.Math.*;
 
 import static com.github.mittyrobotics.drivetrain.SwerveConstants.*;
-import static jdk.vm.ci.aarch64.AArch64.v1;
 
 public class SwerveSubsystem extends SubsystemBase {
     private static SwerveSubsystem instance;
@@ -29,29 +28,37 @@ public class SwerveSubsystem extends SubsystemBase {
         if (instance == null) instance = new SwerveSubsystem();
         return instance;
     }
+
     public final InverseKinematics inverseKinematics = new InverseKinematics();
     double robotLengthMeters;
     double robotWidthMeters;
     private WPI_TalonFX[] drivemotors = new WPI_TalonFX[4];
     private WPI_TalonFX[] anglemotors = new WPI_TalonFX[4];
 
-    public void calculateInputs(Vector linearVel, double angularVel){
+    public void calculateInputs(Vector linearVel, double angularVel) {
         inverseKinematics.calculateInputs(linearVel, angularVel);
 
     }
-    public double getEncoderPosition(int i){
+
+    public void applyCalculatedInputs() {
+        setAmotors(inverseKinematics.getAngles());
+    }
+
+    public double getEncoderPosition(int i) {
         return anglemotors[i].getSelectedSensorPosition();
     }
-    public double getStandardizedModuleAngle(int i){
+
+    public double getStandardizedModuleAngle(int i) {
         return Angle.standardize(getEncoderPosition(i));
     }
-    public void setAmotors(double[] values){
-        for (int i = 0; i < 4; i++){
+
+    public void setAmotors(double[] values) {
+        for (int i = 0; i < 4; i++) {
             double currentangle = Angle.standardize(getStandardizedModuleAngle(i));
             values[i] = Angle.standardize(values[i]);
             boolean clock = (values[i] - currentangle < PI && values[i] - currentangle > 0 || values[i] - currentangle < -PI);
             double distance = Angle.getRealAngleDistance(currentangle, values[i], clock);
-            boolean flip = distance > PI /2;
+            boolean flip = distance > PI / 2;
             flipped[i] = flip;
 
             values[i] = getEncoderPosition(i) + (clock ? 1 : -1) * distance;
@@ -63,13 +70,12 @@ public class SwerveSubsystem extends SubsystemBase {
             anglemotors[i].set(ControlMode.Position, values[i] * TICKS_PER_RADIAN_FALCON_WITH_GEAR_RATIO); //change constants
         }
     }
-    public void setDmotors(double[] values){
-        for (int i = 0; i < 4; i++){
+
+    public void setDmotors(double[] values) {
+        for (int i = 0; i < 4; i++) {
             drivemotors[i].set(ControlMode.Velocity, (flipped[i] ? -1 : 1) * values[i] * TICKS_PER_RADIAN_FALCON_WITH_GEAR_RATIO);
         }
     }
-
-
 
 
     public void initHardware() {
@@ -79,8 +85,35 @@ public class SwerveSubsystem extends SubsystemBase {
 
 
     static class InverseKinematics {
-        public void calculateInputs(Vector linearVel, double angularVel){
 
+        private double[] angles;
+        private double[] magnitudes;
+
+        private final double length = 25, width = 25;
+
+        private Vector r;
+
+        public InverseKinematics() {
+            angles = new double[4];
+            magnitudes = new double[4];
+
+            r = new Vector(length, width);
+        }
+
+        public void calculateInputs(Vector linearVel, double angularVel) {
+
+        }
+
+        public Vector getAngularVector(int i) {
+            return new Vector(r.getY() * (i == 0 || i == 1 ? -1 : 1), r.getX() * (i == 0 || i == 3 ? 1 : -1));
+        }
+
+        public double[] getAngles() {
+            return angles;
+        }
+
+        public double[] getMagnitudes() {
+            return magnitudes;
         }
     }
 
@@ -161,9 +194,7 @@ public class SwerveSubsystem extends SubsystemBase {
         }
         return new double[]{wheel1Speed, wheel2Speed, wheel3Speed, wheel4Speed};
     }
-
-    public void rotateWheel(double angle) {
-
-    }
-
 }
+
+
+
