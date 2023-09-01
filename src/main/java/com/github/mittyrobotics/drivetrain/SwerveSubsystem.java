@@ -133,18 +133,18 @@ public class SwerveSubsystem extends SubsystemBase {
                 desiredAngle1 = atan2(v1.getY(), v1.getX());
             } else if (i == 1) {
                 angularVelocity2 = new Vector(-omega * cos(PI / 2 - atan(robotLengthMeters / robotWidthMeters)),
-                        omega * sin(PI / 2 - atan(robotLengthMeters / robotWidthMeters)));
+                        -omega * sin(PI / 2 - atan(robotLengthMeters / robotWidthMeters)));
                 Vector v2 = Vector.add(angularVelocity2, v);
                 double wheel2Speed = v2.getMagnitude();
                 desiredAngle2 = atan2(v2.getY(), v2.getX());
             } else if (i == 2) {
-                angularVelocity3 = new Vector(-omega * cos(PI / 2 - atan(robotLengthMeters / robotWidthMeters)),
-                        omega * sin(PI / 2 - atan(robotLengthMeters / robotWidthMeters)));
+                angularVelocity3 = new Vector(omega * cos(PI / 2 - atan(robotLengthMeters / robotWidthMeters)),
+                        -omega * sin(PI / 2 - atan(robotLengthMeters / robotWidthMeters)));
                 Vector v3 = Vector.add(angularVelocity3, v);
                 double wheel3Speed = v3.getMagnitude();
                 desiredAngle3 = atan2(v3.getY(), v3.getX());
             } else {
-                angularVelocity4 = new Vector(-omega * cos(PI / 2 - atan(robotLengthMeters / robotWidthMeters)),
+                angularVelocity4 = new Vector(omega * cos(PI / 2 - atan(robotLengthMeters / robotWidthMeters)),
                         omega * sin(PI / 2 - atan(robotLengthMeters / robotWidthMeters)));
                 Vector v4 = Vector.add(angularVelocity4, v);
                 double wheel4Speed = v4.getMagnitude();
