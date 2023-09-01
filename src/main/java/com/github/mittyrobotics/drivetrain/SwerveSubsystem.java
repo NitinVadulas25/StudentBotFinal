@@ -38,9 +38,11 @@ public class SwerveSubsystem extends SubsystemBase {
         inverseKinematics.calculateInputs(linearVel, angularVel);
 
     }
+
     public void applyCalculatedInputs(){
         setAmotors(inverseKinematics.getAngles());
     }
+
     public double getEncoderPosition(int i){
         return anglemotors[i].getSelectedSensorPosition();
     }
@@ -81,6 +83,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
 
     static class InverseKinematics {
+
         private double[] angles;
         private double[] magnitudes;
 
@@ -111,9 +114,12 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
 
+
+
     public double[] wheelSpeedAngle(double omega, double vx, double vy, int wheelNum) {
         double wheel1Speed;
         double desiredangle;
+
         Vector angularVelocity;
         if (wheelNum == 1) {
             angularVelocity = new Vector(-omega*cos(PI/2-atan(robotLengthMeters/robotWidthMeters)),
@@ -134,12 +140,20 @@ public class SwerveSubsystem extends SubsystemBase {
         Vector v = new Vector(vx, vy);
         Vector v1 = Vector.add(angularVelocity, v);
         wheel1Speed = v1.getMagnitude();
+
         desiredangle = atan2(v1.getY(), v1.getX());
         return new double[]{wheel1Speed, desiredangle};
+
+     
+
     }
 
     public void rotateWheel(double angle) {
 
     }
 
+
 }
+
+
+
