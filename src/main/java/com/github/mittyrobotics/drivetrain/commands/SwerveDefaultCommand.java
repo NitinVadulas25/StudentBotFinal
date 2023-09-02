@@ -42,7 +42,7 @@ public class SwerveDefaultCommand extends CommandBase {
 
         SwerveSubsystem.getInstance().applyCalculatedInputs();
 
-        SmartDashboard.putNumber("Desired Angle", SwerveSubsystem.getInstance().wheelSpeedAngle(3, 3, 3, 3)[1]);
+        SmartDashboard.putNumber("Desired Angle", SwerveSubsystem.getInstance().wheelSpeed2(3, 3, 3)[0]);
 
 
 

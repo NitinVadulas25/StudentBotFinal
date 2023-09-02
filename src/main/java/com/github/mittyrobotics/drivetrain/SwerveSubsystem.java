@@ -102,11 +102,12 @@ public class SwerveSubsystem extends SubsystemBase {
 
         public void calculateInputs(Vector linearVel, double angularVel) {
 
+
+
+
         }
 
-        public Vector getAngularVector(int i) {
-            return new Vector(r.getY() * (i == 0 || i == 1 ? -1 : 1), r.getX() * (i == 0 || i == 3 ? 1 : -1));
-        }
+
 
         public double[] getAngles() {
             return angles;
@@ -117,84 +118,44 @@ public class SwerveSubsystem extends SubsystemBase {
         }
     }
 
-    public double[] wheelAngle(double omega, double vx, double vy, int wheelNum) {
-        Vector angularVelocity1, angularVelocity2, angularVelocity3, angularVelocity4;
+        public double[] wheelAngle2 ( double omega, double vx, double vy, int wheelNum){
+        Vector[] angularVelocities = new Vector[4];
         Vector v = new Vector(vx, vy);
-        double desiredAngle1 = 0;
-        double desiredAngle2 = 0;
-        double desiredAngle3 = 0;
-        double desiredAngle4 = 0;
+        double[] desiredAngles = new double[4];
+
         for (int i = 0; i < 4; i++) {
-            if (i == 0) {
-                angularVelocity1 = new Vector(-omega * cos(PI / 2 - atan(robotLengthMeters / robotWidthMeters)),
-                        omega * sin(PI / 2 - atan(robotLengthMeters / robotWidthMeters)));
-                Vector v1 = Vector.add(angularVelocity1, v);
-                double wheel1Speed = v1.getMagnitude();
-                desiredAngle1 = atan2(v1.getY(), v1.getX());
-            } else if (i == 1) {
-                angularVelocity2 = new Vector(-omega * cos(PI / 2 - atan(robotLengthMeters / robotWidthMeters)),
-                        -omega * sin(PI / 2 - atan(robotLengthMeters / robotWidthMeters)));
-                Vector v2 = Vector.add(angularVelocity2, v);
-                double wheel2Speed = v2.getMagnitude();
-                desiredAngle2 = atan2(v2.getY(), v2.getX());
-            } else if (i == 2) {
-                angularVelocity3 = new Vector(omega * cos(PI / 2 - atan(robotLengthMeters / robotWidthMeters)),
-                        -omega * sin(PI / 2 - atan(robotLengthMeters / robotWidthMeters)));
-                Vector v3 = Vector.add(angularVelocity3, v);
-                double wheel3Speed = v3.getMagnitude();
-                desiredAngle3 = atan2(v3.getY(), v3.getX());
-            } else {
-                angularVelocity4 = new Vector(omega * cos(PI / 2 - atan(robotLengthMeters / robotWidthMeters)),
-                        omega * sin(PI / 2 - atan(robotLengthMeters / robotWidthMeters)));
-                Vector v4 = Vector.add(angularVelocity4, v);
-                double wheel4Speed = v4.getMagnitude();
-                desiredAngle4 = atan2(v4.getY(), v4.getX());
-            }
+            double angleOffset = PI / 2 - atan(robotLengthMeters / robotWidthMeters);
+            double signX = (i == 0 || i == 1) ? 1 : -1;
+            double signY = (i == 2 || i == 3) ? -1 : 1;
+
+            angularVelocities[i] = new Vector(signX * omega * cos(angleOffset), signY * omega * sin(angleOffset));
+            Vector vi = Vector.add(angularVelocities[i], v);
+            desiredAngles[i] = atan2(vi.getY(), vi.getX());
         }
-        return new double[]{desiredAngle1, desiredAngle2, desiredAngle3, desiredAngle4};
+
+        return desiredAngles;
     }
 
-    public double[] wheelSpeed(double omega, double vx, double vy, int wheelNum) {
-        Vector angularVelocity1, angularVelocity2, angularVelocity3, angularVelocity4;
+        public double[] wheelSpeed2 ( double omega, double vx, double vy){
+        Vector[] angularVelocities = new Vector[4];
         Vector v = new Vector(vx, vy);
-        double desiredAngle1 = 0;
-        double desiredAngle2 = 0;
-        double desiredAngle3 = 0;
-        double desiredAngle4 = 0;
-        double wheel1Speed = 0;
-        double wheel2Speed = 0;
-        double wheel3Speed = 0;
-        double wheel4Speed = 0;
+        double[] wheelSpeeds = new double[4];
+
         for (int i = 0; i < 4; i++) {
-            if (i == 0) {
-                angularVelocity1 = new Vector(-omega * cos(PI / 2 - atan(robotLengthMeters / robotWidthMeters)),
-                        omega * sin(PI / 2 - atan(robotLengthMeters / robotWidthMeters)));
-                Vector v1 = Vector.add(angularVelocity1, v);
-                wheel1Speed = v1.getMagnitude();
-                desiredAngle1 = atan2(v1.getY(), v1.getX());
-            } else if (i == 1) {
-                angularVelocity2 = new Vector(-omega * cos(PI / 2 - atan(robotLengthMeters / robotWidthMeters)),
-                        omega * sin(PI / 2 - atan(robotLengthMeters / robotWidthMeters)));
-                Vector v2 = Vector.add(angularVelocity2, v);
-                wheel2Speed = v2.getMagnitude();
-                desiredAngle2 = atan2(v2.getY(), v2.getX());
-            } else if (i == 2) {
-                angularVelocity3 = new Vector(-omega * cos(PI / 2 - atan(robotLengthMeters / robotWidthMeters)),
-                        omega * sin(PI / 2 - atan(robotLengthMeters / robotWidthMeters)));
-                Vector v3 = Vector.add(angularVelocity3, v);
-                wheel3Speed = v3.getMagnitude();
-                desiredAngle3 = atan2(v3.getY(), v3.getX());
-            } else {
-                angularVelocity4 = new Vector(-omega * cos(PI / 2 - atan(robotLengthMeters / robotWidthMeters)),
-                        omega * sin(PI / 2 - atan(robotLengthMeters / robotWidthMeters)));
-                Vector v4 = Vector.add(angularVelocity4, v);
-                wheel4Speed = v4.getMagnitude();
-                desiredAngle4 = atan2(v4.getY(), v4.getX());
-            }
+            double angleOffset = PI / 2 - atan(robotLengthMeters / robotWidthMeters);
+            double signX = (i == 0 || i == 3) ? 1 : -1;
+            double signY = (i == 2 || i == 3) ? -1 : 1;
+
+            angularVelocities[i] = new Vector(signX * omega * cos(angleOffset), signY * omega * sin(angleOffset));
+            wheelSpeeds[i] = Vector.add(angularVelocities[i], v).getMagnitude();
         }
-        return new double[]{wheel1Speed, wheel2Speed, wheel3Speed, wheel4Speed};
+
+        return wheelSpeeds;
     }
 }
+
+
+
 
 
 
