@@ -37,7 +37,6 @@ public class SwerveSubsystem extends SubsystemBase {
 
     public void calculateInputs(Vector linearVel, double angularVel) {
         inverseKinematics.calculateInputs(linearVel, angularVel);
-
     }
 
     public void applyCalculatedInputs() {
@@ -100,10 +99,7 @@ public class SwerveSubsystem extends SubsystemBase {
             r = new Vector(length, width);
         }
 
-        public void calculateInputs(Vector linearVel, double angularVel) {
-
-
-
+        public Vector[] calculateInputs(Vector linearVel, double angularVel) {
 
         }
 
@@ -118,47 +114,37 @@ public class SwerveSubsystem extends SubsystemBase {
         }
     }
 
-
-
-
-    public double[] wheelAngle(double omega, double vx, double vy, int wheelNum) {
+    public double[] WheelAngle(double omega, double vx, double vy) {
         Vector[] angularVelocities = new Vector[4];
         Vector v = new Vector(vx, vy);
         double[] desiredAngles = new double[4];
 
         for (int i = 0; i < 4; i++) {
+            robotLengthMeters = (i == 0 || i== 1) ? -1:1;
+            robotWidthMeters = (i == 2 || i == 3) ? -1:1;
             double angleOffset = PI / 2 + atan(robotLengthMeters / robotWidthMeters);
-
 
             angularVelocities[i] = new Vector(omega * cos(angleOffset), omega * sin(angleOffset));
             Vector vi = Vector.add(angularVelocities[i], v);
             desiredAngles[i] = atan2(vi.getY(), vi.getX());
         }
-
         return desiredAngles;
     }
 
-    public double[] wheelSpeed(double omega, double vx, double vy, int wheelNum) {
+    public double[] getWheelSpeed(double omega, double vx, double vy) {
         Vector[] angularVelocities = new Vector[4];
         Vector v = new Vector(vx, vy);
         double[] wheelSpeeds = new double[4];
 
         for (int i = 0; i < 4; i++) {
-            double angleOffset = PI / 2 - atan(robotLengthMeters / robotWidthMeters);
-
+            robotLengthMeters = (i == 0 || i== 1) ? -1:1;
+            robotWidthMeters = (i == 2 || i == 3) ? -1:1;
+            double angleOffset = PI / 2 + atan(robotLengthMeters / robotWidthMeters);
 
             angularVelocities[i] = new Vector(omega * cos(angleOffset),omega * sin(angleOffset));
             Vector vi = Vector.add(angularVelocities[i], v);
             wheelSpeeds[i] = vi.getMagnitude();
         }
-
         return wheelSpeeds;
     }
-
 }
-
-
-
-
-
-

@@ -38,16 +38,6 @@ public class SwerveDefaultCommand extends CommandBase {
                 ),
                 SwerveConstants.MAX_ANGULAR_SPEED * throttleAngular
         );
-
-
-        SwerveSubsystem.getInstance().applyCalculatedInputs();
-
-        SmartDashboard.putNumber("Desired Angle", SwerveSubsystem.getInstance().wheelSpeed2(3, 3, 3)[0]);
-
-
-
-
-
     }
 
     @Override
