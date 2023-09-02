@@ -118,17 +118,19 @@ public class SwerveSubsystem extends SubsystemBase {
         }
     }
 
-        public double[] wheelAngle2 ( double omega, double vx, double vy, int wheelNum){
+
+
+
+    public double[] wheelAngle(double omega, double vx, double vy, int wheelNum) {
         Vector[] angularVelocities = new Vector[4];
         Vector v = new Vector(vx, vy);
         double[] desiredAngles = new double[4];
 
         for (int i = 0; i < 4; i++) {
-            double angleOffset = PI / 2 - atan(robotLengthMeters / robotWidthMeters);
-            double signX = (i == 0 || i == 1) ? 1 : -1;
-            double signY = (i == 2 || i == 3) ? -1 : 1;
+            double angleOffset = PI / 2 + atan(robotLengthMeters / robotWidthMeters);
 
-            angularVelocities[i] = new Vector(signX * omega * cos(angleOffset), signY * omega * sin(angleOffset));
+
+            angularVelocities[i] = new Vector(omega * cos(angleOffset), omega * sin(angleOffset));
             Vector vi = Vector.add(angularVelocities[i], v);
             desiredAngles[i] = atan2(vi.getY(), vi.getX());
         }
@@ -136,22 +138,23 @@ public class SwerveSubsystem extends SubsystemBase {
         return desiredAngles;
     }
 
-        public double[] wheelSpeed2 ( double omega, double vx, double vy){
+    public double[] wheelSpeed(double omega, double vx, double vy, int wheelNum) {
         Vector[] angularVelocities = new Vector[4];
         Vector v = new Vector(vx, vy);
         double[] wheelSpeeds = new double[4];
 
         for (int i = 0; i < 4; i++) {
             double angleOffset = PI / 2 - atan(robotLengthMeters / robotWidthMeters);
-            double signX = (i == 0 || i == 3) ? 1 : -1;
-            double signY = (i == 2 || i == 3) ? -1 : 1;
 
-            angularVelocities[i] = new Vector(signX * omega * cos(angleOffset), signY * omega * sin(angleOffset));
-            wheelSpeeds[i] = Vector.add(angularVelocities[i], v).getMagnitude();
+
+            angularVelocities[i] = new Vector(omega * cos(angleOffset),omega * sin(angleOffset));
+            Vector vi = Vector.add(angularVelocities[i], v);
+            wheelSpeeds[i] = vi.getMagnitude();
         }
 
         return wheelSpeeds;
     }
+
 }
 
 
