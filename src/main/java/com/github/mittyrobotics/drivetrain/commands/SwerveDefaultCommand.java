@@ -2,9 +2,7 @@ package com.github.mittyrobotics.drivetrain.commands;
 
 import com.github.mittyrobotics.drivetrain.SwerveConstants;
 import com.github.mittyrobotics.drivetrain.SwerveSubsystem;
-import com.github.mittyrobotics.util.Gyro;
 import com.github.mittyrobotics.util.OI;
-import com.github.mittyrobotics.util.math.Angle;
 import com.github.mittyrobotics.util.math.Vector;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -30,6 +28,8 @@ public class SwerveDefaultCommand extends CommandBase {
         throttleY = -OI.getInstance().getDriverController().getLeftY();
         throttleAngular = -OI.getInstance().getDriverController().getRightX();
 
+        SwerveSubsystem.getInstance().wheelSpeed(throttleAngular, throttleX, throttleY);
+
 
         SwerveSubsystem.getInstance().calculateInputs(
                 new Vector(
@@ -38,6 +38,18 @@ public class SwerveDefaultCommand extends CommandBase {
                 ),
                 SwerveConstants.MAX_ANGULAR_SPEED * throttleAngular
         );
+
+
+
+        SwerveSubsystem.getInstance().applyCalculatedInputs();
+
+        SmartDashboard.putNumber("Desired Angle", SwerveSubsystem.getInstance().wheelSpeed(3, 3, 3)[0]);
+
+
+
+
+
+
     }
 
     @Override

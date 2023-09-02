@@ -3,7 +3,7 @@ package com.github.mittyrobotics.drivetrain;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-//import com.github.mittyrobotics.drivetrain.commands.SwerveDefaultCommand;
+import com.github.mittyrobotics.drivetrain.commands.SwerveDefaultCommand;
 import com.github.mittyrobotics.util.math.*;
 import com.github.mittyrobotics.util.Pair;
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -114,7 +114,14 @@ public class SwerveSubsystem extends SubsystemBase {
         }
     }
 
-    public double[] WheelAngle(double omega, double vx, double vy) {
+
+
+
+
+
+
+    public double[] wheelAngle(double omega, double vx, double vy) {
+
         Vector[] angularVelocities = new Vector[4];
         Vector v = new Vector(vx, vy);
         double[] desiredAngles = new double[4];
@@ -129,22 +136,43 @@ public class SwerveSubsystem extends SubsystemBase {
             desiredAngles[i] = atan2(vi.getY(), vi.getX());
         }
         return desiredAngles;
+
     }
 
-    public double[] getWheelSpeed(double omega, double vx, double vy) {
+
+
+
+
+    public double[] wheelSpeed(double omega, double vx, double vy) {
+
         Vector[] angularVelocities = new Vector[4];
         Vector v = new Vector(vx, vy);
         double[] wheelSpeeds = new double[4];
 
         for (int i = 0; i < 4; i++) {
+
             robotLengthMeters = (i == 0 || i== 1) ? -1:1;
             robotWidthMeters = (i == 2 || i == 3) ? -1:1;
             double angleOffset = PI / 2 + atan(robotLengthMeters / robotWidthMeters);
+
 
             angularVelocities[i] = new Vector(omega * cos(angleOffset),omega * sin(angleOffset));
             Vector vi = Vector.add(angularVelocities[i], v);
             wheelSpeeds[i] = vi.getMagnitude();
         }
         return wheelSpeeds;
+
     }
+
 }
+
+
+
+}
+
+
+
+
+
+
+
