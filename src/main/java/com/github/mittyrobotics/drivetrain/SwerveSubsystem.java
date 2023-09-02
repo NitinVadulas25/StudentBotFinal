@@ -122,7 +122,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
 
 
-    public double[] wheelAngle(double omega, double vx, double vy, int wheelNum) {
+    public double[] wheelAngle(double omega, double vx, double vy) {
         Vector[] angularVelocities = new Vector[4];
         Vector v = new Vector(vx, vy);
         double[] desiredAngles = new double[4];
@@ -137,9 +137,11 @@ public class SwerveSubsystem extends SubsystemBase {
         }
 
         return desiredAngles;
+
     }
 
-    public double[] wheelSpeed(double omega, double vx, double vy, int wheelNum) {
+
+    public double[] wheelSpeed(double omega, double vx, double vy) {
         Vector[] angularVelocities = new Vector[4];
         Vector v = new Vector(vx, vy);
         double[] wheelSpeeds = new double[4];
@@ -147,14 +149,15 @@ public class SwerveSubsystem extends SubsystemBase {
         for (int i = 0; i < 4; i++) {
             double angleOffset = PI / 2 - atan(robotLengthMeters / robotWidthMeters);
 
-
             angularVelocities[i] = new Vector(omega * cos(angleOffset),omega * sin(angleOffset));
             Vector vi = Vector.add(angularVelocities[i], v);
             wheelSpeeds[i] = vi.getMagnitude();
         }
 
         return wheelSpeeds;
+
     }
+
 
 }
 

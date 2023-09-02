@@ -2,11 +2,9 @@ package com.github.mittyrobotics;
 
 import com.github.mittyrobotics.arm.ArmMotionProfiles;
 import com.github.mittyrobotics.arm.pivot.PivotSubsystem;
-import com.github.mittyrobotics.drivetrain.SwerveSubsystem;
 import com.github.mittyrobotics.util.Gyro;
 import com.github.mittyrobotics.util.OI;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 public class Robot extends TimedRobot {
 
